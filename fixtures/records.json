@@ -1,0 +1,20 @@
+[
+  {
+    "sourceId": "transit-timetable-demo-1",
+    "source": "sample-source",
+    "observedAt": "2026-11-16T09:00:00Z",
+    "label": "班次计划",
+    "attributes": {
+      "sample": true
+    }
+  },
+  {
+    "sourceId": "transit-timetable-demo-2",
+    "source": "sample-source",
+    "observedAt": "2026-11-16T09:05:00Z",
+    "label": "班次计划 2",
+    "attributes": {
+      "sample": true
+    }
+  }
+]

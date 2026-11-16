@@ -1,20 +1,21 @@
 [
   {
-    "sourceId": "transit-timetable-demo-1",
-    "source": "sample-source",
-    "observedAt": "2026-11-16T09:00:00Z",
-    "label": "班次计划",
+    "sourceId": "R8-old",
+    "source": "公交时刻表目录",
+    "observedAt": "2026-11-16T08:00:00Z",
+    "label": "R8",
     "attributes": {
-      "sample": true
-    }
-  },
-  {
-    "sourceId": "transit-timetable-demo-2",
-    "source": "sample-source",
-    "observedAt": "2026-11-16T09:05:00Z",
-    "label": "班次计划 2",
-    "attributes": {
-      "sample": true
+      "editionId": "R8-old",
+      "route": "R8",
+      "direction": "outbound",
+      "announcedAt": "2026-11-16T08:00:00Z",
+      "validFrom": "2026-11-01",
+      "validTo": "2026-11-30",
+      "timezone": "Asia/Shanghai",
+      "departures": [
+        "08:00",
+        "09:00"
+      ]
     }
   }
 ]

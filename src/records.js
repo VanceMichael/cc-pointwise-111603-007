@@ -21,13 +21,37 @@ export function normalizeRecord(input) {
   return record;
 }
 
+function announcedRank(record) {
+  const announced = Date.parse(record.attributes?.announcedAt ?? '');
+  return Number.isFinite(announced) ? announced : null;
+}
+
+function observationRank(record) {
+  const announced = announcedRank(record);
+  return announced == null ? Date.parse(record.observedAt) : Math.max(announced, Date.parse(record.observedAt));
+}
+
 export function mergeRecords(existing, incoming) {
   const merged = new Map(existing.map((record) => [record.sourceId, record]));
   for (const record of incoming) {
     const current = merged.get(record.sourceId);
-    if (!current || Date.parse(record.observedAt) >= Date.parse(current.observedAt)) {
-      merged.set(record.sourceId, record);
+    if (!current) { merged.set(record.sourceId, record); continue; }
+    const currentAnnounced = announcedRank(current);
+    const incomingAnnounced = announcedRank(record);
+    if (currentAnnounced != null && incomingAnnounced != null) {
+      // An explicit announcement time orders versions. A replay of an older
+      // announcement, including one served from a source cache after a newer
+      // edition, must not overwrite the catalogue entry. Equal announcements
+      // fall back to observation time so a re-fetch can still update details.
+      if (incomingAnnounced > currentAnnounced
+        || (incomingAnnounced === currentAnnounced && observationRank(record) >= observationRank(current))) {
+        merged.set(record.sourceId, record);
+      }
+      continue;
     }
+    if (currentAnnounced != null) continue;
+    if (incomingAnnounced != null) { merged.set(record.sourceId, record); continue; }
+    if (observationRank(record) >= observationRank(current)) merged.set(record.sourceId, record);
   }
   return [...merged.values()].sort((left, right) => left.sourceId.localeCompare(right.sourceId));
 }
